@@ -1,12 +1,62 @@
-const express = require("express")
-const app = express()
+const express = require("express");
+const mongoose = require("mongoose");
+const app = express();
+const dotenv = require("dotenv");
+const { Schema } = mongoose;
+const cors = require("cors");
+dotenv.config();
 
-const PORT = 3000
+const PORT = 3000;
+const mongoURL = process.env.mongoURL;
 
-app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`)
-}) 
+const User = new Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  surname: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+});
 
-app.get('/', (req,res) => {
-    res.json(`port is listening on ${PORT}`)
-})
+const userModel = mongoose.model("UserModels", User);
+
+app.use(cors());
+app.use(express.json());
+
+mongoose
+  .connect(mongoURL)
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Connected to MongoDB on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+app.get("/getUser", async (req, res) => {
+  try {
+    const response = await userModel.findOne();
+    res.json(response);
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+app.post("/CreateUser", async (req, res) => {
+  try {
+    const user = req.body;
+    const userNew = new userModel(user);
+    const userCreated = await userNew.save();
+    res.json(userCreated);
+  } catch (err) {
+    res.json(err);
+  }
+});
