@@ -6,9 +6,9 @@ const { Schema } = mongoose;
 const cors = require("cors");
 dotenv.config();
 
-const PORT = 3000;
+const PORT = 3000; 
 const mongoURL = process.env.mongoURL;
-
+ 
 const User = new Schema({
   name: {
     type: String,
@@ -25,10 +25,10 @@ const User = new Schema({
   },
 });
 
-const userModel = mongoose.model("UserModels", User);
+const userModel = mongoose.model("UserModels", User, "UserModels");
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); 
 
 mongoose
   .connect(mongoURL)
@@ -37,13 +37,13 @@ mongoose
       console.log(`Connected to MongoDB on port ${PORT}`);
     });
   })
-  .catch((err) => {
-    console.log(err);
-  });
+  .catch((err) => { 
+    console.log(err);    
+  });   
 
 app.get("/getUser", async (req, res) => {
   try {
-    const response = await userModel.findOne();
+    const response = await userModel.find({});
     res.json(response);
   } catch (err) {
     res.json(err);
