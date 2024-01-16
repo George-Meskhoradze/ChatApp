@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function Login() {
+function Register() {
   // const [data, setData] = useState([]);
 
   // useEffect(() => {
@@ -77,4 +77,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
