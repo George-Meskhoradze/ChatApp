@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Login from './Login.jsx'
 import './App.css'
+import Auth from './Authorization'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Login />
+    <Auth />
   </React.StrictMode>,
 )
