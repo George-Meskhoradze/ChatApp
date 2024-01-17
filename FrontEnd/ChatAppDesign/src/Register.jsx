@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Register() {
   // const [data, setData] = useState([]);
@@ -16,14 +17,14 @@ function Register() {
   // }, []);
 
   return (
-    <div className="bg w-full h-screen bg-chatapp flex flex-col justify-center items-center">
-      <div className="chat w-[350px] h-[500px] bg-lightPurple rounded-b-[6px] p-[15px]">
+    <>
+      <div className="chat flex flex-col bg-lightPurple w-[350px] h-[500px] rounded-b-[6px] justify-center items-center">
         <form
           action="submit"
           className="form flex flex-col justify-center items-center gap-[30px]"
         >
           <div className="flex flex-col gap-[20px]">
-            <div className="flex flex-col justify-center gap-[2px]">
+            <div className="flex flex-col justify-center gap-[1px]">
               <label htmlFor="" className="text-title text-[13px] font-Raleway">
                 Your Name
               </label>
@@ -34,7 +35,7 @@ function Register() {
               />
             </div>
 
-            <div className="flex flex-col justify-center gap-[2px]">
+            <div className="flex flex-col justify-center gap-[1px]">
               <label htmlFor="" className="text-title text-[13px] font-Raleway">
                 Your Lastname
               </label>
@@ -45,7 +46,7 @@ function Register() {
               />
             </div>
 
-            <div className="flex flex-col justify-center gap-[2px]">
+            <div className="flex flex-col justify-center gap-[1px]">
               <label htmlFor="" className="text-title text-[13px] font-Raleway">
                 Email
               </label>
@@ -56,7 +57,7 @@ function Register() {
               />
             </div>
 
-            <div className="flex flex-col justify-center gap-[2px]">
+            <div className="flex flex-col justify-center gap-[1px]">
               <label htmlFor="" className="text-title text-[13px] font-Raleway">
                 Password
               </label>
@@ -67,7 +68,7 @@ function Register() {
               />
             </div>
 
-            <div className="flex flex-col justify-center gap-[2px]">
+            <div className="flex flex-col justify-center gap-[1px]">
               <label htmlFor="" className="text-title text-[13px] font-Raleway">
                 Repeat Password
               </label>
@@ -89,7 +90,7 @@ function Register() {
           </div>
         </form>
       </div>
-    </div>
+    </>
   );
 }
 
