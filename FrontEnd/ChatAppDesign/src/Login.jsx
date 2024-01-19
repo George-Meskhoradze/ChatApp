@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Login() {
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3000/getUser")
-  //     .then((response) => {
-  //       setData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
-
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/getUser")
+      .then((response) => {
+        setData(response.data);
+        console.log(data)
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error(error);
+      }); 
+  }, []);
+ 
   return (
     <div className="chat flex flex-col bg-lightPurple w-[350px] h-[300px] rounded-b-[6px] justify-center items-center">
       <form
-        action="submit"
+        action=""
         className="form flex flex-col justify-center items-center gap-[30px]"
       >
         <div className="flex flex-col gap-[25px]">

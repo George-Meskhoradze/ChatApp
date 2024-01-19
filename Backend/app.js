@@ -11,16 +11,21 @@ const mongoURL = process.env.mongoURL;
  
 const User = new Schema({
   name: {
-    type: String,
+    type: String, 
     unique: true,
     required: true,
   },
   surname: {
     type: String,
     required: true,
+  }, 
+  email: {
+    type: String,
+    unique:true,
+    required: true,
   },
-  age: {
-    type: Number,
+  password: {
+    type: String,
     required: true,
   },
 });
@@ -38,7 +43,7 @@ mongoose
     });
   })
   .catch((err) => { 
-    console.log(err);    
+    console.log(err);     
   });   
 
 app.get("/getUser", async (req, res) => {
@@ -46,17 +51,21 @@ app.get("/getUser", async (req, res) => {
     const response = await userModel.find({});
     res.json(response);
   } catch (err) {
-    res.json(err);
-  }
+    res.json(err); 
+  } 
 });
 
-app.post("/CreateUser", async (req, res) => {
-  try {
-    const user = req.body;
-    const userNew = new userModel(user);
-    const userCreated = await userNew.save();
-    res.json(userCreated);
-  } catch (err) {
-    res.json(err);
-  }
+app.post("/register", (req, res) => {
+  const [name,surname,email,password] = req.body
+  userModel.findOne({email: email})
+  .then(user => {
+    if(user){ 
+      res.json("Alredy Exist")
+    } else {
+      userModel.create({name: name,surname: surname,email: email, password: password})
+      .then(result => res.json("Account Created"))
+      .catch(err => res.json(err))
+    }
+  })
+  .catch(err => res.json(err))
 });

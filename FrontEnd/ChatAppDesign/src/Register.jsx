@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 function Register() {
-  // const [data, setData] = useState([]);
+  const [name, setName] = useState();
+  const [surName, setSurName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3000/getUser")
-  //     .then((response) => {
-  //       setData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === confirmPassword) {
+      axios
+        .post("http://localhost:3000/register", {
+          name,
+          surName,
+          email,
+          password,
+        })
+        .then((response) => console.log(response.data))
+        .catch((err) => console.log(err));
+    } else {
+      console.log("it doesnt works")
+    }
+  };
 
   return (
     <>
       <div className="chat flex flex-col bg-lightPurple w-[350px] h-[500px] rounded-b-[6px] justify-center items-center">
         <form
-          action="submit"
+          onSubmit={handleSubmit}
           className="form flex flex-col justify-center items-center gap-[30px]"
         >
           <div className="flex flex-col gap-[20px]">
@@ -30,8 +39,10 @@ function Register() {
               </label>
               <input
                 type="text"
+                name="name"
                 placeholder="Enter Your Name"
                 className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -41,8 +52,10 @@ function Register() {
               </label>
               <input
                 type="text"
+                name="surname"
                 placeholder="Enter Your Lastname"
                 className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
+                onChange={(e) => setSurName(e.target.value)}
               />
             </div>
 
@@ -52,8 +65,10 @@ function Register() {
               </label>
               <input
                 type="text"
+                name="email"
                 placeholder="Enter Your Email"
                 className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -63,8 +78,10 @@ function Register() {
               </label>
               <input
                 type="password"
+                name="password"
                 placeholder="Enter Your Password"
                 className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -74,8 +91,10 @@ function Register() {
               </label>
               <input
                 type="password"
+                name="confirmPassword"
                 placeholder="Repeat Your Password"
                 className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
           </div>
