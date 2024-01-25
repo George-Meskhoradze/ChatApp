@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
+import MainPage from "./MainPage"
 import axios from "axios";
 
 const Authorization = () => {
@@ -49,6 +50,7 @@ const Authorization = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/mainpage" element={<MainPage />} />
         </Routes>
       </div>
     </>

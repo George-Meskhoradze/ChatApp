@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 function Register() {
   const [name, setName] = useState();
-  const [surName, setSurName] = useState();
+  const [surname, setSurName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -14,13 +15,13 @@ function Register() {
       axios
         .post("http://localhost:3000/register", {
           name,
-          surName,
+          surname,
           email,
           password,
         })
-        .then((response) => console.log(response.data))
+        .then((response) => console.log(response)) 
         .catch((err) => console.log(err));
-    } else {
+    } else { 
       console.log("it doesnt works")
     }
   };
