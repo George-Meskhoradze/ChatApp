@@ -9,17 +9,19 @@ function Register() {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      axios
+      axios 
         .post("http://localhost:3000/register", {
           name,
           surname,
           email,
           password,
         })
-        .then((response) => console.log(response)) 
+        .then((response) => {response.status == 200 ? navigate('/') : console.log(response.status)})
         .catch((err) => console.log(err));
     } else { 
       console.log("it doesnt works")
@@ -65,7 +67,7 @@ function Register() {
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 placeholder="Enter Your Email"
                 className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"

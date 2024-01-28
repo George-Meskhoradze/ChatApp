@@ -1,15 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-const { Schema } = mongoose;
 const cors = require("cors");
 dotenv.config();
 
 const PORT = 3000;
 const mongoURL = process.env.mongoURL;
 
-const User = new Schema(
+const User = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -51,10 +51,19 @@ mongoose
     console.log(err);
   });
 
-app.get("/getUser", async (req, res) => {
+app.post("/", async (req, res) => {
+  const user = userModel.findOne({ email: req.body.email });
+
+  if (user == null) {
+    res.status(400).send("User Not Found");
+  }
+
   try {
-    const response = await userModel.find({});
-    res.json(response);
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      res.send("success");
+    } else {
+      res.send("unsuccess")
+    }
   } catch (err) {
     res.json(err);
   }
@@ -62,19 +71,21 @@ app.get("/getUser", async (req, res) => {
 
 app.post("/register", async (req, res) => {
   try {
-    const { name, surname, email, password } = req.body;
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+    const { name, surname, email } = req.body;
     const existingUser = await userModel.findOne({ email: email });
 
     if (existingUser) {
-      return res.json("User Alredy Exist");
+      return res.json(`User Alredy Exist`);
     } else {
       const newUser = await userModel.create({
         name: name,
         surname: surname,
         email: email,
-        password: password,
+        password: hashPassword,
       });
-      res.json("Account Created");
+      res.json(`Account Created`);
     }
   } catch (err) {
     return res.json(err);

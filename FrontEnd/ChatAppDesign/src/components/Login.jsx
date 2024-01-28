@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [data, setData] = useState([]);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     axios
-      .get("http://localhost:3000/getUser")
+      .post("http://localhost:3000/", { email, password })
       .then((response) => {
-        setData(response.data);
-        console.log(data)
-        console.log(response)
+        if (response.data) {
+          const userEmail = response.data.email;
+          const userPassword = response.data.Password;
+
+          if (userEmail === email || userPassword === password) {
+            navigate("/mainpage");
+          } else {
+            console.log("Password dont matches");
+          }
+        } else {
+          alert("data not found");
+        }
       })
-      .catch((error) => {
-        console.error(error);
-      }); 
-  }, []);
- 
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="chat flex flex-col bg-lightPurple w-[350px] h-[300px] rounded-b-[6px] justify-center items-center">
       <form
-        action=""
+        onSubmit={handleSubmit}
         className="form flex flex-col justify-center items-center gap-[30px]"
       >
         <div className="flex flex-col gap-[25px]">
@@ -31,6 +44,7 @@ function Login() {
             <input
               type="text"
               placeholder="Enter Your Email"
+              onChange={(e) => setEmail(e.target.value)}
               className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
             />
           </div>
@@ -42,6 +56,7 @@ function Login() {
             <input
               type="password"
               placeholder="Enter Your Password"
+              onChange={(e) => setPassword(e.target.value)}
               className="w-[300px] h-[40px] rounded-[5px] pl-[3px] outline-none bg-lightPink"
             />
           </div>
