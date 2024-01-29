@@ -7,27 +7,21 @@ function Login() {
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3000/", { email, password })
-      .then((response) => {
-        if (response.data) {
-          const userEmail = response.data.email;
-          const userPassword = response.data.Password;
-
-          if (userEmail === email || userPassword === password) {
-            navigate("/mainpage");
-          } else {
-            console.log("Password dont matches");
-          }
-        } else {
-          alert("data not found");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await axios.post("http://localhost:3000/", {
+        email,
+        password,
       });
+      if (response.status == 200) {
+        navigate("/mainpage")
+      } else {
+        console.log("Failed")
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

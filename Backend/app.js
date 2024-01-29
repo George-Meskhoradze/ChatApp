@@ -52,17 +52,17 @@ mongoose
   });
 
 app.post("/", async (req, res) => {
-  const user = userModel.findOne({ email: req.body.email });
+  const user = await userModel.findOne({ email: req.body.email });
 
-  if (user == null) {
+  if (!user) {
     res.status(400).send("User Not Found");
   }
-
+ 
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      res.send("success");
+      res.status(200).json({success: true, message: "Log in Successful"})
     } else {
-      res.send("unsuccess")
+      res.status(401).json({success:false, message: "Log in Unsuccessful"})
     }
   } catch (err) {
     res.json(err);
