@@ -4,7 +4,12 @@ const app = express();
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 dotenv.config();
+
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
 const PORT = 3000;
 const mongoURL = process.env.mongoURL;
@@ -37,7 +42,12 @@ const User = new mongoose.Schema(
 
 const userModel = mongoose.model("UserModels", User);
 
-app.use(cors());
+app.use( 
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 mongoose
@@ -57,12 +67,18 @@ app.post("/", async (req, res) => {
   if (!user) {
     res.status(400).send("User Not Found");
   }
- 
+
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      res.status(200).json({success: true, message: "Log in Successful"})
+      const accesstoken = jwt.sign({userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: "1m" });
+      const refreshtoken = jwt.sign({userId: user._id}, process.env.REFRESH_TOKEN, { expiresIn: "10m" });
+
+      res.cookie("accesstoken", accesstoken, {httpOnly: true});
+      res.cookie("refreshtoken", refreshtoken, {httpOnly: true});
+
+      res.status(200).json({ success: true, message: "Log in Successful" });
     } else {
-      res.status(401).json({success:false, message: "Log in Unsuccessful"})
+      res.status(401).json({ success: false, message: "Log in Unsuccessful" });
     }
   } catch (err) {
     res.json(err);

@@ -13,6 +13,8 @@ function Login() {
       const response = await axios.post("http://localhost:3000/", {
         email,
         password,
+      }, {
+        withCredentials: true
       });
       if (response.status == 200) {
         navigate("/mainpage")
