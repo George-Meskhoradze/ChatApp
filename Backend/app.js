@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const { jwtVerify, jwtAuth } = require("./JWT");
 dotenv.config();
 
 app.use(cookieParser());
@@ -42,7 +43,7 @@ const User = new mongoose.Schema(
 
 const userModel = mongoose.model("UserModels", User);
 
-app.use( 
+app.use(
   cors({
     origin: ["http://localhost:5173"],
     credentials: true,
@@ -70,10 +71,9 @@ app.post("/", async (req, res) => {
 
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      const accesstoken = jwt.sign({userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: "1m" });
-      const refreshtoken = jwt.sign({userId: user._id}, process.env.REFRESH_TOKEN, { expiresIn: "10m" });
+      const {accesstoken, refreshtoken} =  jwtAuth(user);
 
-      res.cookie("accesstoken", accesstoken, {httpOnly: true});
+      res.cookie("accesstoken", accesstoken, { httpOnly: true });
       res.cookie("refreshtoken", refreshtoken, {httpOnly: true});
 
       res.status(200).json({ success: true, message: "Log in Successful" });
@@ -83,6 +83,10 @@ app.post("/", async (req, res) => {
   } catch (err) {
     res.json(err);
   }
+}); 
+
+app.get("/profile", jwtVerify, (req, res) => {
+  res.json("logged");
 });
 
 app.post("/register", async (req, res) => {
