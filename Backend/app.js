@@ -16,7 +16,7 @@ const PORT = 3000;
 const mongoURL = process.env.mongoURL;
 
 const User = new mongoose.Schema(
-  {
+  { 
     name: {
       type: String,
       required: true,
@@ -44,7 +44,7 @@ const User = new mongoose.Schema(
 const userModel = mongoose.model("UserModels", User);
 
 app.use(
-  cors({
+  cors({  
     origin: ["http://localhost:5173"],
     credentials: true,
   })

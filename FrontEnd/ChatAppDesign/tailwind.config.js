@@ -11,6 +11,7 @@ export default {
       "lightPurple": "#2d3250",
       "orange": "#f9b17a",
       "lightPink": "#676f9d",
+      "black": "#000000"
     },
     fontFamily: {
       "Raleway": "Raleway, sans-serif",
